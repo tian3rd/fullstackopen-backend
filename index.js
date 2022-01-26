@@ -39,6 +39,18 @@ app.get("/info", (req, res) => {
   res.send(`<p>Phonebook has info for ${numPersons} people</p><p>${date}</p>`);
 });
 
+app.get("/api/persons/:id", (req, res) => {
+  //   convert id string to number
+  const id = Number(req.params.id);
+  const person = persons.find((p) => p.id === id);
+  //   console.log(person);
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).end();
+  }
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
