@@ -5,3 +5,22 @@ Content-Type: application/json
   "name": "John",
   "number": "043-123-4567"
 }
+
+###
+# duplicate person
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "John",
+  "number": "043-123-4567"
+}
+
+###
+# missing name
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "number": "043-123-4567"
+}

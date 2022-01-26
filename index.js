@@ -64,6 +64,13 @@ app.delete("/api/persons/:id", (req, res) => {
 app.post("/api/persons", (req, res) => {
   const person = req.body;
   console.log(person);
+  // if name is missing or it already exists, deny the request (bad request)
+  if (!person.name) {
+    return res.status(400).json({ error: "name missing" });
+  } else if (persons.find((p) => p.name === person.name)) {
+    return res.status(400).json({ error: "name already exists" });
+  }
+
   // option1. find the max id among persons and assign it to new id
   // let maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
   // option2. assign a random number
