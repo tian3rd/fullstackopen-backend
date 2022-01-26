@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     id: 1,
@@ -57,6 +59,19 @@ app.delete("/api/persons/:id", (req, res) => {
 
   //  status code 204: no content
   res.status(204).end();
+});
+
+app.post("/api/persons", (req, res) => {
+  const person = req.body;
+  console.log(person);
+  // option1. find the max id among persons and assign it to new id
+  // let maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
+  // option2. assign a random number
+  let randomId = Math.floor(Math.random() * 1000000);
+  person.id = randomId + 1;
+
+  persons = persons.concat(person);
+  res.json(person);
 });
 
 const PORT = 3001;
