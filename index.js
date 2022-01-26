@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const app = express();
 
@@ -9,6 +10,9 @@ morgan.token("postContent", (req, res) => {
 });
 
 app.use(express.json());
+
+// use cors to resolve cross origin resource sharing problem (CORS) from different ports
+app.use(cors());
 
 app.use(
   morgan(
