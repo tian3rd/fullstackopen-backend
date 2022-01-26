@@ -3,8 +3,18 @@ const morgan = require("morgan");
 
 const app = express();
 
+// after json parser? not necessary? because app uses json parser?
+morgan.token("postContent", (req, res) => {
+  return JSON.stringify(req.body);
+});
+
 app.use(express.json());
-app.use(morgan("tiny"));
+
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :postContent"
+  )
+);
 
 let persons = [
   {
