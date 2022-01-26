@@ -14,6 +14,9 @@ app.use(express.json());
 // use cors to resolve cross origin resource sharing problem (CORS) from different ports
 app.use(cors());
 
+// make express show static content, index.html and js files
+app.use(express.static("build"));
+
 app.use(
   morgan(
     ":method :url :status :res[content-length] - :response-time ms :postContent"
