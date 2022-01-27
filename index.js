@@ -75,7 +75,7 @@ app.get("/info", (req, res) => {
 
 app.get("/api/persons/:id", (req, res) => {
   //   convert id string to number
-  const id = Number(req.params.id);
+  //   const id = Number(req.params.id);
   //   const person = persons.find((p) => p.id === id);
   //   //   console.log(person);
   //   if (person) {
@@ -83,13 +83,18 @@ app.get("/api/persons/:id", (req, res) => {
   //   } else {
   //     res.status(404).end();
   //   }
-  Person.findById(id)
+  Person.findById(req.params.id)
     .then((person) => {
-      res.json(person);
+      // if not found deal with undefined as 404 not found
+      if (person) {
+        res.json(person);
+      } else {
+        res.status(404).end();
+      }
     })
     .catch((error) => {
       console.log(error);
-      res.status(404).end();
+      res.status(400).send({ error: "malformatted id" });
     });
 });
 
