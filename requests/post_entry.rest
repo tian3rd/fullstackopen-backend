@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
   "name": "John",
-  "number": "043-123-4567"
+  "number": "043-123"
 }
 
 ###
@@ -31,8 +31,8 @@ POST https://infinite-ridge-50582.herokuapp.com/api/persons
 Content-Type: application/json
 
 {
-  "name": "John",
-  "number": "555-123"
+  "name": "Johnny",
+  "number": "55"
 }
 
 ###
@@ -43,4 +43,24 @@ Content-Type: application/json
 {
   "name": "Kobe",
   "number": "567"
+}
+
+###
+# updated number in person
+PUT http://localhost:3001/api/persons/61f21c3584d360739ddaf909
+Content-Type: application/json
+
+{
+  "name": "Kobe",
+  "number": "81"
+}
+
+###
+# updated number in person
+PUT https://infinite-ridge-50582.herokuapp.com/api/persons/61f21c3584d360739ddaf909
+Content-Type: application/json
+
+{
+  "name": "Kobe",
+  "number": "123"
 }

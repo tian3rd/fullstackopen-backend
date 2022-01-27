@@ -120,16 +120,25 @@ app.delete("/api/persons/:id", (req, res) => {
     });
 });
 
-app.put("/api/persons/:id", (req, res) => {
+app.put("/api/persons/:id", (req, res, next) => {
   const person = req.body;
   const newPerson = new Person({
     name: person.name,
     number: person.number,
   });
   // add {new: true} to return the updated document
-  Person.findByIdAndUpdate(req.params.id, newPerson, { new: true })
+  Person.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        name: newPerson.name,
+        number: newPerson.number,
+      },
+    },
+    { new: true }
+  )
     .then((updatedPerson) => {
-      res.json(updatedPerson);
+      res.json(updatedPerson.toJSON());
     })
     .catch((error) => {
       console.log(error);
@@ -137,18 +146,19 @@ app.put("/api/persons/:id", (req, res) => {
     });
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const person = req.body;
   console.log(person);
   // if name is missing or it already exists, deny the request (bad request)
   if (!person.name) {
     return res.status(400).json({ error: "name missing" });
   } else {
-    Person.findOne({ name: person.name })
+    Person.find({ name: person.name })
       .then((p) => {
         if (p) {
-          //   make a post request to update the existed person
-          res.redirect("/api/persons/" + p.id);
+          //  how to make a post request to update the existed person
+          console.log("found person: ", p);
+          res.redirect("/api/persons/" + p[0].id);
         } else {
           const newPerson = new Person({
             name: person.name,
