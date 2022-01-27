@@ -157,11 +157,12 @@ app.post("/api/persons", (req, res, next) => {
   } else {
     Person.find({ name: person.name })
       .then((p) => {
-        if (p) {
+        //  found person is an array
+        if (p.length > 0) {
           //  how to make a post request to update the existed person
           //  actually it's not needed? because the post/put logic is decided by the frontend
-          console.log("found person: ", p);
-          res.redirect("/api/persons/" + p[0].id);
+          console.log("found person: ", p[0].toJSON());
+          res.redirect("/api/persons/" + p[0].toJSON().id);
         } else {
           const newPerson = new Person({
             name: person.name,
