@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const Person = require("./models/person");
 
 const app = express();
 
@@ -64,13 +66,21 @@ app.get("/info", (req, res) => {
 app.get("/api/persons/:id", (req, res) => {
   //   convert id string to number
   const id = Number(req.params.id);
-  const person = persons.find((p) => p.id === id);
-  //   console.log(person);
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
+  //   const person = persons.find((p) => p.id === id);
+  //   //   console.log(person);
+  //   if (person) {
+  //     res.json(person);
+  //   } else {
+  //     res.status(404).end();
+  //   }
+  Person.findById(id)
+    .then((person) => {
+      res.json(person);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(404).end();
+    });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -87,18 +97,26 @@ app.post("/api/persons", (req, res) => {
   // if name is missing or it already exists, deny the request (bad request)
   if (!person.name) {
     return res.status(400).json({ error: "name missing" });
-  } else if (persons.find((p) => p.name === person.name)) {
-    return res.status(400).json({ error: "name already exists" });
   }
+  //   } else if (persons.find((p) => p.name === person.name)) {
+  //     return res.status(400).json({ error: "name already exists" });
+  //   }
+  //   // option1. find the max id among persons and assign it to new id
+  //   // let maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
+  //   // option2. assign a random number
+  //   let randomId = Math.floor(Math.random() * 1000000);
+  //   person.id = randomId + 1;
+  //   persons = persons.concat(person);
+  //   res.json(person);
 
-  // option1. find the max id among persons and assign it to new id
-  // let maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
-  // option2. assign a random number
-  let randomId = Math.floor(Math.random() * 1000000);
-  person.id = randomId + 1;
+  const newPerson = new Person({
+    name: person.name,
+    number: person.number,
+  });
 
-  persons = persons.concat(person);
-  res.json(person);
+  newPerson.save().then((result) => {
+    res.json(result);
+  });
 });
 
 const PORT = process.env.PORT || 3001;
