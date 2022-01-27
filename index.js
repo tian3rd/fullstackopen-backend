@@ -53,14 +53,24 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  //   res.json(persons);
+  Person.find({}).then((result) => {
+    res.json(result);
+  });
 });
 
 app.get("/info", (req, res) => {
-  let numPersons = persons.length;
-  const date = new Date();
+  //   let numPersons = persons.length;
+  //   const date = new Date();
 
-  res.send(`<p>Phonebook has info for ${numPersons} people</p><p>${date}</p>`);
+  //   res.send(`<p>Phonebook has info for ${numPersons} people</p><p>${date}</p>`);
+  Person.find({}).then((result) => {
+    res.send(
+      `<h1>Phonebook has info for ${
+        result.length
+      } people</h1><p>${new Date()}</p>`
+    );
+  });
 });
 
 app.get("/api/persons/:id", (req, res) => {
