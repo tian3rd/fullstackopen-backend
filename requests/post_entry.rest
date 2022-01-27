@@ -26,27 +26,17 @@ Content-Type: application/json
 }
 
 ###
-# updated number in person
-POST https://infinite-ridge-50582.herokuapp.com/api/persons
+# test post
+POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Johnny",
-  "number": "55"
+  "name": "Danny",
+  "number": "321"
 }
 
 ###
-# updated number in person
-POST https://infinite-ridge-50582.herokuapp.com/api/persons/
-Content-Type: application/json
-
-{
-  "name": "Kobe",
-  "number": "567"
-}
-
-###
-# updated number in person
+# check update using put
 PUT http://localhost:3001/api/persons/61f21c3584d360739ddaf909
 Content-Type: application/json
 
@@ -56,11 +46,41 @@ Content-Type: application/json
 }
 
 ###
-# updated number in person
+# new post
+POST https://infinite-ridge-50582.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+  "name": "Johnny",
+  "number": "55"
+}
+
+###
+# new post
+POST https://infinite-ridge-50582.herokuapp.com/api/persons/
+Content-Type: application/json
+
+{
+  "name": "Kobe",
+  "number": "567"
+}
+
+###
+# updated number in person using put
 PUT https://infinite-ridge-50582.herokuapp.com/api/persons/61f21c3584d360739ddaf909
 Content-Type: application/json
 
 {
   "name": "Kobe",
   "number": "123"
+}
+
+###
+# new post
+POST https://infinite-ridge-50582.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+  "name": "Salah",
+  "number": "11"
 }
