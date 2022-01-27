@@ -148,7 +148,7 @@ app.post("/api/persons", (req, res) => {
       .then((p) => {
         if (p) {
           //   make a post request to update the existed person
-          return res.redirect("/api/persons/" + p.id);
+          res.redirect("/api/persons/" + p.id);
         } else {
           const newPerson = new Person({
             name: person.name,

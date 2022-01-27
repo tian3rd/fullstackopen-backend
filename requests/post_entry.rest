@@ -24,3 +24,23 @@ Content-Type: application/json
 {
   "number": "043-123-4567"
 }
+
+###
+# updated number in person
+POST https://infinite-ridge-50582.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+  "name": "John",
+  "number": "555-123"
+}
+
+###
+# updated number in person
+POST https://infinite-ridge-50582.herokuapp.com/api/persons/
+Content-Type: application/json
+
+{
+  "name": "Kobe",
+  "number": "567"
+}
