@@ -129,6 +129,8 @@ app.put("/api/persons/:id", (req, res, next) => {
   // add {new: true} to return the updated document
   Person.findByIdAndUpdate(
     req.params.id,
+    // specifically use $set update the name and number without changing the _id which is immutable
+    // otherwise the update will cause MongoServerError: Performing an update on the path '_id' would modify the immutable field '_id'
     {
       $set: {
         name: newPerson.name,
@@ -157,6 +159,7 @@ app.post("/api/persons", (req, res, next) => {
       .then((p) => {
         if (p) {
           //  how to make a post request to update the existed person
+          //  actually it's not needed? because the post/put logic is decided by the frontend
           console.log("found person: ", p);
           res.redirect("/api/persons/" + p[0].id);
         } else {
