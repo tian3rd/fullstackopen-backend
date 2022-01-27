@@ -73,7 +73,7 @@ app.get("/info", (req, res) => {
   });
 });
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res, next) => {
   //   convert id string to number
   //   const id = Number(req.params.id);
   //   const person = persons.find((p) => p.id === id);
@@ -94,7 +94,9 @@ app.get("/api/persons/:id", (req, res) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(400).send({ error: "malformatted id" });
+      //   res.status(400).send({ error: "malformatted id" });
+      //   move error handling into middleware
+      return next(error);
     });
 });
 
@@ -129,10 +131,17 @@ app.post("/api/persons", (req, res) => {
     number: person.number,
   });
 
-  newPerson.save().then((result) => {
-    res.json(result);
-  });
-});
+app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.log(error.message);
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
