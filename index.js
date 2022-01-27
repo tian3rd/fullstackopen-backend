@@ -143,6 +143,27 @@ app.post("/api/persons", (req, res) => {
   // if name is missing or it already exists, deny the request (bad request)
   if (!person.name) {
     return res.status(400).json({ error: "name missing" });
+  } else {
+    Person.findOne({ name: person.name })
+      .then((p) => {
+        if (p) {
+          //   make a post request to update the existed person
+          return res.redirect("/api/persons/" + p.id);
+        } else {
+          const newPerson = new Person({
+            name: person.name,
+            number: person.number,
+          });
+
+          newPerson.save().then((result) => {
+            res.json(result);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        next(err);
+      });
   }
   //   } else if (persons.find((p) => p.name === person.name)) {
   //     return res.status(400).json({ error: "name already exists" });
