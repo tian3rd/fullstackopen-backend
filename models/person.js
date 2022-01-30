@@ -28,8 +28,8 @@ const personSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (v) => {
-        if (v.match(/\-/g).length > 1) return false;
-        return /\d{2,3}\-\d{5,}$/.test(v);
+        if (v.match(/-/g).length > 1) return false;
+        return /\d{2,3}-\d{5,}$/.test(v);
       },
       message: "Number must be in format: 040-1234567",
     },

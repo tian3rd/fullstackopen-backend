@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 if (
   process.argv.length < 3 ||
-  process.argv.length == 4 ||
+  process.argv.length === 4 ||
   process.argv.length > 5
 ) {
   console.log(
