@@ -20,7 +20,18 @@ const personSchema = new mongoose.Schema({
     minLength: 3,
     required: true,
   },
-  number: String,
+  number: {
+    type: String,
+    validate: {
+      validator: (v) => {
+        if (v.match(/\-/g).length > 1) return false;
+        return /\d{2,3}\-\d{5,}$/.test(v);
+      },
+      message: "Number must be in format: 040-1234567",
+    },
+    minLength: 8,
+    required: [true, "User phone number required"],
+  },
 });
 
 // convert _id and __v to id (it's not changed in the cloud database)
