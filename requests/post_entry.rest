@@ -36,6 +36,16 @@ Content-Type: application/json
 }
 
 ###
+# violation of minLength
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "D",
+    "number": "1234567"
+}
+
+###
 # check update using put
 PUT http://localhost:3001/api/persons/61f21c3584d360739ddaf909
 Content-Type: application/json
@@ -84,3 +94,5 @@ Content-Type: application/json
   "name": "Salah",
   "number": "11"
 }
+
+
