@@ -17,7 +17,11 @@ mongoose
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
-    minLength: 3,
+    // minLength: 3,
+    validate: {
+      validator: (name) => name.length > 2,
+      message: "Name must be longer than 2 characters.",
+    },
     required: true,
   },
   number: {
