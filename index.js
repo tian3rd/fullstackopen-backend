@@ -54,9 +54,14 @@ app.get("/", (req, res) => {
 
 app.get("/api/persons", (req, res) => {
   //   res.json(persons);
-  Person.find({}).then((result) => {
-    res.json(result);
-  });
+  Person.find({})
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      console.log("GET /api/persons error:\n", error.message);
+      console.log(error);
+    });
 });
 
 app.get("/info", (req, res) => {
@@ -96,6 +101,7 @@ app.get("/api/persons/:id", (req, res, next) => {
       console.log(error);
       //   res.status(400).send({ error: "malformatted id" });
       //   move error handling into middleware
+      console.log("GET ERROR: \n", error);
       return next(error);
     });
 });
@@ -115,7 +121,7 @@ app.delete("/api/persons/:id", (req, res) => {
       }
     })
     .catch((error) => {
-      console.log(error);
+      console.log("DELETE ERROR: \n", error);
       return next(error);
     });
 });
@@ -143,7 +149,7 @@ app.put("/api/persons/:id", (req, res, next) => {
       res.json(updatedPerson.toJSON());
     })
     .catch((error) => {
-      console.log(error);
+      console.log("PUT ERROR: \n", error);
       return next(error);
     });
 });
@@ -169,13 +175,19 @@ app.post("/api/persons", (req, res, next) => {
             number: person.number,
           });
 
-          newPerson.save().then((result) => {
-            res.json(result);
-          });
+          newPerson
+            .save()
+            .then((result) => {
+              res.json(result);
+            })
+            .catch((error) => {
+              console.log("POST ERROR: \n", error);
+              next(error);
+            });
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log("POST FIND ERROR: \n", err);
         next(err);
       });
   }
@@ -199,9 +211,24 @@ const unknownEndpoint = (req, res) => {
 app.use(unknownEndpoint);
 
 const errorHandler = (error, request, response, next) => {
-  console.log(error.message);
+  console.error("--------------------------------------------------------");
+  console.error(
+    "ERROR HAPPENED: \n",
+    error,
+    "\nERROR NAME: ",
+    error.name,
+    "\nERROR MSG: ",
+    error.message
+  );
+  console.error("--------------------------------------------------------");
   if (error.name === "CastError") {
-    return response.status(400).send({ error: "malformatted id" });
+    return response
+      .status(400)
+      .send({ error: "malformatted id", errorName: error.name });
+  } else if (error.name === "ValidationError") {
+    return response
+      .status(400)
+      .json({ error: error.message, errorName: error.name });
   }
   next(error);
 };
