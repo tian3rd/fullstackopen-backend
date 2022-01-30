@@ -4,6 +4,7 @@
   "description": "Part3 in fullstatckopen course",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "build:ui": "rm -rf build && cd ../fullstackopen/part2/phonebook/ && npm run build && cp -r build ../../../fullstackopen-backend/",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git ci -m uibuild && git push && npm run deploy",
@@ -27,6 +28,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^8.8.0",
     "nodemon": "^2.0.15"
   }
 }
